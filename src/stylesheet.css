@@ -1,0 +1,10 @@
+.board {
+  display: grid;
+  grid-template-columns: repeat(32, 25px);
+  grid-template-rows: repeat(32, 25px);
+}
+
+.square {
+  width: 25px;
+  height: 25px;
+}

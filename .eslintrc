@@ -1,0 +1,12 @@
+{
+  "extends": "airbnb",
+  "env": {
+    "browser": true
+  },
+  "plugins": [
+    "react-hooks"
+  ],
+  "rules": {
+    "arrow-body-style": "off"
+  }
+}

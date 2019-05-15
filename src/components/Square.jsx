@@ -17,4 +17,5 @@ Square.propTypes = {
   x: PropTypes.number.isRequired,
   y: PropTypes.number.isRequired,
 };
+
 export default Square;

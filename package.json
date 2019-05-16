@@ -2,12 +2,16 @@
   "name": "snake",
   "version": "1.0.0",
   "description": "",
+  "main": "index.js",
   "scripts": {
-    "start": "parcel src/index.html"
+    "start": "npm run build && node index",
+    "dev": "parcel src/index.html",
+    "build": "rm -rf dist && parcel build src/index.html"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "express": "^4.16.4",
     "prop-types": "^15.7.2",
     "react": "^16.8.6",
     "react-dom": "^16.8.6"

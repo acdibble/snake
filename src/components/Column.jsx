@@ -2,12 +2,18 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import Square from './Square';
+import contains from '../helpers/contains';
 
 const getColor = (x, y, food, snake) => {
-  if (snake.some(coord => coord.x === x && coord.y === y)) return 'green';
+  if (contains(snake, { x, y })) return 'green';
   if (x === food.x && y === food.y) return 'red';
 
-  return 'yellow';
+  const evenCol = x % 2 === 0;
+  const evenRow = y % 2 === 0;
+  // eslint-disable-next-line no-nested-ternary
+  return evenCol
+    ? evenRow ? 'yellow' : '#CCCC00'
+    : evenRow ? '#CCCC00' : 'yellow';
 };
 
 const Column = ({ x, food, snake }) => {

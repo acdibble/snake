@@ -1,70 +1,61 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 
 import Board from './components/Board';
 import useInterval from './hooks/useInterval';
-
-const getRandomCoordinates = (upper = 32, lower = 0) => ({
-  x: Math.floor(Math.random() * (upper - lower)) + lower,
-  y: Math.floor(Math.random() * (upper - lower)) + lower,
-});
+import contains from './helpers/contains';
+import { getRandomCoordinates, getRandomDirection } from './helpers/randoms';
+import downHandler from './helpers/downHandler';
+import directionHandler from './helpers/directionHandler';
+import outOfBounds from './helpers/outOfBounds';
+import seedSnake from './helpers/seedSnake';
 
 const Game = () => {
-  const [snakeLocation, changeSnakeLocation] = useState([]);
-  const [direction, changeDirection] = useState('left');
-  const [food, updateFood] = useState({ x: null, y: null });
+  const [direction, setDirection] = useState(getRandomDirection());
+  const [food, setFood] = useState({ x: -1, y: -1 });
+  const [tick, setTick] = useState(0);
+  const [snake, setSnake] = useState([]);
+  const currentDirection = useRef(direction);
 
-  const seedFood = () => {
-    let { x, y } = getRandomCoordinates();
+  const seedFood = (newSnake) => {
+    let coord = getRandomCoordinates();
 
-    while (snakeLocation[`${x}${y}`] != null) {
-      ({ x, y } = getRandomCoordinates());
+    while (contains(newSnake || snake, coord)) {
+      coord = getRandomCoordinates();
     }
 
-    return {
-      x,
-      y,
-    };
+    return coord;
   };
 
-
   const init = () => {
-    changeSnakeLocation([getRandomCoordinates(16, 8)]);
-    updateFood(seedFood());
+    const newDir = getRandomDirection();
+    setDirection(newDir);
+    setSnake(seedSnake(newDir));
+    setFood(seedFood());
   };
 
   useInterval(() => {
-    const head = snakeLocation[0];
-    let newHead;
-    if (direction === 'left') {
-      newHead = { x: head.x - 1, y: head.y };
-    } else if (direction === 'right') {
-      newHead = { x: head.x + 1, y: head.y };
-    } else if (direction === 'up') {
-      newHead = { x: head.x, y: head.y - 1 };
-    } else if (direction === 'down') {
-      newHead = { x: head.x, y: head.y + 1 };
-    }
-    changeSnakeLocation([newHead, ...snakeLocation.slice(0, -1)]);
-  }, 500);
+    setTick(tick + 1);
+  }, 250);
 
   useEffect(() => {
-    const downHandler = ({ key }) => {
-      if (key === 'ArrowLeft' && direction !== 'left') {
-        changeDirection('left');
-      }
-      if (key === 'ArrowRight' && direction !== 'right') {
-        changeDirection('right');
-      }
-      if (key === 'ArrowDown' && direction !== 'down') {
-        changeDirection('down');
-      }
-      if (key === 'ArrowUp' && direction !== 'up') {
-        changeDirection('up');
-      }
-    };
-    window.addEventListener('keydown', downHandler);
+    currentDirection.current = direction;
+    const newHead = directionHandler(snake[0], direction);
+    if (outOfBounds(newHead) || contains(snake, newHead)) {
+      init();
+    } else if (newHead.x === food.x && newHead.y === food.y) {
+      const newSnake = [newHead, ...snake];
+      setFood(seedFood(newSnake));
+      setSnake(newSnake);
+    } else {
+      setSnake([newHead, ...snake.slice(0, -1)]);
+    }
+  }, [tick]);
+
+  useEffect(() => {
+    const fn = downHandler(direction, currentDirection, setDirection);
+    window.addEventListener('keydown', fn);
     return () => {
-      window.removeEventListener('keydown', downHandler);
+      window.removeEventListener('keydown', fn);
     };
   }, [direction]);
 
@@ -75,7 +66,7 @@ const Game = () => {
   return (
     <Board
       food={food}
-      snake={snakeLocation}
+      snake={snake}
     />
   );
 };

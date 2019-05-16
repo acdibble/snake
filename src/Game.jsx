@@ -12,7 +12,6 @@ import seedSnake from './helpers/seedSnake';
 const Game = () => {
   const [direction, setDirection] = useState(getRandomDirection());
   const [food, setFood] = useState({ x: -1, y: -1 });
-  const [tick, setTick] = useState(0);
   const [snake, setSnake] = useState([]);
   const currentDirection = useRef(direction);
 
@@ -34,10 +33,6 @@ const Game = () => {
   };
 
   useInterval(() => {
-    setTick(tick + 1);
-  }, 250);
-
-  useEffect(() => {
     currentDirection.current = direction;
     const newHead = directionHandler(snake[0], direction);
     if (outOfBounds(newHead) || contains(snake, newHead)) {
@@ -49,7 +44,7 @@ const Game = () => {
     } else {
       setSnake([newHead, ...snake.slice(0, -1)]);
     }
-  }, [tick]);
+  }, 250);
 
   useEffect(() => {
     const fn = downHandler(direction, currentDirection, setDirection);
@@ -64,10 +59,13 @@ const Game = () => {
   }, []);
 
   return (
-    <Board
-      food={food}
-      snake={snake}
-    />
+    <>
+      <Board
+        food={food}
+        snake={snake}
+      />
+      <a href="https://github.com/acdibble/snake">Source</a>
+    </>
   );
 };
 

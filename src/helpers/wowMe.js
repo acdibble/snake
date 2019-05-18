@@ -18,14 +18,7 @@ const play = async (audioBuffer) => {
 
 const wowMe = (() => {
   let counter = 0;
-  const sounds = {};
-
-  Promise.all(Array.from({ length: 17 }, (v, i) => getFile(`/assets/wow${i}.wav`)))
-    .then((files) => {
-      files.forEach((file, i) => {
-        sounds[i] = file;
-      });
-    });
+  const sounds = Promise.all(Array.from({ length: 17 }, (v, i) => getFile(`/assets/wow${i}.wav`)));
 
   return () => {
     play(sounds[counter]).catch(console.error);

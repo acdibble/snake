@@ -3,12 +3,13 @@ import React, { useState, useEffect, useRef } from 'react';
 import Board from './components/Board';
 import useInterval from './hooks/useInterval';
 import contains from './helpers/contains';
-import { getRandomCoordinates, getRandomDirection } from './helpers/randoms';
+import { getRandomDirection } from './helpers/randoms';
 import downHandler from './helpers/downHandler';
 import directionHandler from './helpers/directionHandler';
 import outOfBounds from './helpers/outOfBounds';
 import seedSnake from './helpers/seedSnake';
 import wowMe from './helpers/wowMe';
+import seedFood from './helpers/seedFood';
 
 const Game = () => {
   const [direction, setDirection] = useState(getRandomDirection());
@@ -16,21 +17,11 @@ const Game = () => {
   const [snake, setSnake] = useState([]);
   const currentDirection = useRef(direction);
 
-  const seedFood = (newSnake) => {
-    let coord = getRandomCoordinates();
-
-    while (contains(newSnake || snake, coord)) {
-      coord = getRandomCoordinates();
-    }
-
-    return coord;
-  };
-
   const init = () => {
     const newDir = getRandomDirection();
     setDirection(newDir);
     setSnake(seedSnake(newDir));
-    setFood(seedFood());
+    setFood(seedFood(snake));
   };
 
   useInterval(() => {
@@ -41,7 +32,7 @@ const Game = () => {
     } else if (newHead.x === food.x && newHead.y === food.y) {
       wowMe();
       const newSnake = [newHead, ...snake];
-      setFood(seedFood(newSnake));
+      setFood(seedFood(snake, newSnake));
       setSnake(newSnake);
     } else {
       setSnake([newHead, ...snake.slice(0, -1)]);

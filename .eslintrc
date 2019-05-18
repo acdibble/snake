@@ -7,6 +7,5 @@
     "react-hooks"
   ],
   "rules": {
-    "arrow-body-style": "off"
   }
 }

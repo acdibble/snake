@@ -1,6 +1,4 @@
-const getRandomNumber = (upper, lower = 0) => {
-  return Math.floor(Math.random() * (upper - lower)) + lower;
-};
+const getRandomNumber = (upper, lower = 0) => Math.floor(Math.random() * (upper - lower)) + lower;
 
 export const getRandomCoordinates = (upper = 32, lower = 0) => ({
   x: getRandomNumber(upper, lower),

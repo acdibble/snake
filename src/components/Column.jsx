@@ -9,24 +9,22 @@ const getColor = (x, y, food, snake) => {
   return (x - y) % 2 === 0 ? 'yellow' : '#CCCC00';
 };
 
-const Column = ({ x, food, snake }) => {
-  return (
-    <div className="col">
-      {Array.from({ length: 32 }, (v, i) => {
-        const color = getColor(x, i, food, snake);
-        return (
-          <div
-            style={{
-              backgroundColor: color,
-            }}
-            key={`${x}${i}`}
-            className="square"
-          />
-        );
-      })}
-    </div>
-  );
-};
+const Column = ({ x, food, snake }) => (
+  <div className="col">
+    {Array.from({ length: 32 }, (v, i) => {
+      const color = getColor(x, i, food, snake);
+      return (
+        <div
+          style={{
+            backgroundColor: color,
+          }}
+          key={`${x}${i}`}
+          className="square"
+        />
+      );
+    })}
+  </div>
+);
 
 Column.propTypes = {
   food: PropTypes.shape({

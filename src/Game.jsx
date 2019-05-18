@@ -8,6 +8,7 @@ import downHandler from './helpers/downHandler';
 import directionHandler from './helpers/directionHandler';
 import outOfBounds from './helpers/outOfBounds';
 import seedSnake from './helpers/seedSnake';
+import wowMe from './helpers/wowMe';
 
 const Game = () => {
   const [direction, setDirection] = useState(getRandomDirection());
@@ -38,6 +39,7 @@ const Game = () => {
     if (outOfBounds(newHead) || contains(snake, newHead)) {
       init();
     } else if (newHead.x === food.x && newHead.y === food.y) {
+      wowMe();
       const newSnake = [newHead, ...snake];
       setFood(seedFood(newSnake));
       setSnake(newSnake);

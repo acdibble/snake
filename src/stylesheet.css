@@ -1,3 +1,9 @@
+#app {
+  width: 800px;
+  margin: 0 auto;
+  border: 1px solid red;
+}
+
 .board {
   display: grid;
   grid-template-columns: repeat(32, 25px);

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 
 import Board from './components/Board';
 import useInterval from './hooks/useInterval';
@@ -12,15 +12,17 @@ import seedFood from './helpers/seedFood';
 import { addClass, removeClass } from './helpers/classHelpers';
 
 const Game = () => {
-  const [snakeDirection, setSnakeDirection] = useState<Direction>(0);
-  const [newDirection, setNewDirection] = useState<Direction>(0);
+  const [direction, setDirection] = useState<Direction>(Direction.Up);
+  const currentDirection = useRef(direction);
   const [food, setFood] = useState<Segment>({ x: -1, y: -1 });
   const [snake, setSnake] = useState<Segment[]>([]);
+  const [score, setScore] = useState<number>(0);
 
   const init = () => {
+    setScore(0);
     const newDir = getRandomDirection();
-    setSnakeDirection(newDir);
-    setNewDirection(newDir);
+    setDirection(newDir);
+    currentDirection.current = newDir;
     const newSnake = seedSnake(newDir);
     newSnake.forEach((seg: Segment) => {
       addClass(seg, 'snake');
@@ -30,8 +32,8 @@ const Game = () => {
   };
 
   useInterval(() => {
-    setSnakeDirection(newDirection);
-    const newHead = directionHandler(snake[0], newDirection);
+    currentDirection.current = direction;
+    const newHead = directionHandler(snake[0], direction);
     const newHeadTile = document.getElementById(`${newHead.x},${newHead.y}`);
     if (outOfBounds(newHead) || newHeadTile?.classList.contains('snake')) {
       Array.from(document.getElementsByClassName('snake')).forEach((el) => {
@@ -54,19 +56,26 @@ const Game = () => {
   }, 250);
 
   useEffect(() => {
-    const callback = downHandler(snakeDirection, setNewDirection);
-    window.addEventListener('keydown', callback);
-    return () => { window.removeEventListener('keydown', callback); };
-  }, [snakeDirection]);
+    const fn = downHandler(direction, currentDirection, setDirection);
+    window.addEventListener('keydown', fn);
+    return () => {
+      window.removeEventListener('keydown', fn);
+    };
+  }, [direction]);
 
   useEffect(() => {
     init();
   }, []);
 
   useEffect(() => {
+    setScore(score + 1);
     addClass(food, 'food');
     return () => { removeClass(food, 'food'); };
   }, [food]);
+
+  useEffect(() => {
+    console.log('Your current score:', score);
+  }, [score]);
 
   return (
     <>

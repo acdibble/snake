@@ -1,17 +1,17 @@
 #app {
-  width: 64vw;
+  width: 640px;
   margin: 0 auto;
 }
 
 .board {
   display: grid;
-  grid-template-columns: repeat(32, 2vw);
-  grid-template-rows: repeat(32, 2vw);
+  grid-template-columns: repeat(32, 20px);
+  grid-template-rows: repeat(32, 20px);
 }
 
 .square {
-  width: 2vw;
-  height: 2vw;
+  width: 20px;
+  height: 20px;
 }
 
 .even {

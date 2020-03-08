@@ -16,19 +16,23 @@ const keyToDirectionMap: Record<string, Direction> = {
 };
 
 const downHandler = (
-  snakeDirection: Direction,
+  direction: Direction,
+  currentDirection: React.MutableRefObject<Direction>,
   setNewDirection: React.Dispatch<React.SetStateAction<Direction>>,
 ) => ({ key }: KeyboardEvent) => {
   const newDir = keyToDirectionMap[key];
+  const { current } = currentDirection;
   if (
     (newDir === Direction.Left || newDir === Direction.Right)
-    && (snakeDirection === Direction.Up || snakeDirection === Direction.Down)
+    && (current === Direction.Up || current === Direction.Down)
+    && (direction === Direction.Up || direction === Direction.Down)
   ) {
     setNewDirection(newDir);
   }
   if (
     (newDir === Direction.Up || newDir === Direction.Down)
-    && (snakeDirection === Direction.Left || snakeDirection === Direction.Right)
+    && (current === Direction.Left || current === Direction.Right)
+    && (direction === Direction.Left || direction === Direction.Right)
   ) {
     setNewDirection(newDir);
   }

@@ -9,7 +9,7 @@ import outOfBounds from './helpers/outOfBounds';
 import seedSnake from './helpers/seedSnake';
 import wowMe from './helpers/wowMe';
 import seedFood from './helpers/seedFood';
-import toggleClass from './helpers/toggleClass';
+import { addClass, removeClass } from './helpers/classHelpers';
 
 const Game = () => {
   const [snakeDirection, setSnakeDirection] = useState<Direction>(0);
@@ -23,7 +23,7 @@ const Game = () => {
     setNewDirection(newDir);
     const newSnake = seedSnake(newDir);
     newSnake.forEach((seg: Segment) => {
-      toggleClass(seg, 'snake');
+      addClass(seg, 'snake');
     });
     setSnake(newSnake);
     setFood(seedFood());
@@ -34,8 +34,10 @@ const Game = () => {
     const newHead = directionHandler(snake[0], newDirection);
     const newHeadTile = document.getElementById(`${newHead.x},${newHead.y}`);
     if (outOfBounds(newHead) || newHeadTile?.classList.contains('snake')) {
+      Array.from(document.getElementsByClassName('snake')).forEach((el) => {
+        el.classList.remove('snake');
+      });
       init();
-      snake.forEach((seg) => toggleClass(seg, 'snake'));
       return;
     }
 
@@ -46,9 +48,9 @@ const Game = () => {
       setSnake(newSnake);
     } else {
       setSnake([newHead, ...snake.slice(0, -1)]);
-      toggleClass(snake[snake.length - 1], 'snake');
+      removeClass(snake[snake.length - 1], 'snake');
     }
-    toggleClass(newHead, 'snake');
+    addClass(newHead, 'snake');
   }, 250);
 
   useEffect(() => {
@@ -62,8 +64,8 @@ const Game = () => {
   }, []);
 
   useEffect(() => {
-    toggleClass(food, 'food');
-    return () => { toggleClass(food, 'food'); };
+    addClass(food, 'food');
+    return () => { removeClass(food, 'food'); };
   }, [food]);
 
   return (

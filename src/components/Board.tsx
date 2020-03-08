@@ -8,7 +8,7 @@ const enum Tile {
 const Board = () => (
   <div className="board">
     {Array.from({ length: 32 }, (_, x) => (
-      <div className="col">
+      <div className="col" key={`col-${x}`}>
         {Array.from({ length: 32 }, (__, y) => (
           <div
             id={`${x},${y}`}

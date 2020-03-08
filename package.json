@@ -6,7 +6,8 @@
   "scripts": {
     "start": "node index",
     "dev": "parcel src/index.html",
-    "build": "rm -rf dist && parcel build src/index.html"
+    "build": "rm -rf dist && parcel build src/index.html",
+    "lint": "eslint src/**/*.ts"
   },
   "author": "",
   "license": "ISC",

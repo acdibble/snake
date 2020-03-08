@@ -1,4 +1,5 @@
 import { getRandomCoordinates } from './randoms';
+import { Direction } from './directionHandler';
 
 const seedSnake = (direction: Direction): Segment[] => {
   const head = getRandomCoordinates(16, 8);

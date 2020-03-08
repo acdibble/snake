@@ -1,6 +1,14 @@
 import React from 'react';
+import { Direction } from './directionHandler';
 
-const keys: Record<string, Direction> = {
+export enum ArrowKeys {
+  ArrowUp = 'ArrowUp',
+  ArrowRight = 'ArrowRight',
+  ArrowDown = 'ArrowDown',
+  ArrowLeft = 'ArrowLeft',
+}
+
+const keyToDirectionMap: Record<string, Direction> = {
   ArrowUp: Direction.Up,
   ArrowRight: Direction.Right,
   ArrowDown: Direction.Down,
@@ -8,25 +16,21 @@ const keys: Record<string, Direction> = {
 };
 
 const downHandler = (
-  direction: Direction,
-  currentDirection: React.MutableRefObject<Direction>,
-  fn: React.Dispatch<React.SetStateAction<Direction>>,
+  snakeDirection: Direction,
+  setNewDirection: React.Dispatch<React.SetStateAction<Direction>>,
 ) => ({ key }: KeyboardEvent) => {
-  const newDir = keys[key];
-  const { current } = currentDirection;
+  const newDir = keyToDirectionMap[key];
   if (
     (newDir === Direction.Left || newDir === Direction.Right)
-    && (current === Direction.Up || current === Direction.Down)
-    && (direction === Direction.Up || direction === Direction.Down)
+    && (snakeDirection === Direction.Up || snakeDirection === Direction.Down)
   ) {
-    fn(newDir);
+    setNewDirection(newDir);
   }
   if (
     (newDir === Direction.Up || newDir === Direction.Down)
-    && (current === Direction.Left || current === Direction.Right)
-    && (direction === Direction.Left || direction === Direction.Right)
+    && (snakeDirection === Direction.Left || snakeDirection === Direction.Right)
   ) {
-    fn(newDir);
+    setNewDirection(newDir);
   }
 };
 

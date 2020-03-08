@@ -1,3 +1,5 @@
+import { Direction } from './directionHandler';
+
 const getRandomNumber = (upper: number, lower: number = 0): number => (
   Math.floor(Math.random() * (upper - lower)) + lower
 );

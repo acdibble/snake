@@ -9,6 +9,7 @@ function useInterval(callback: () => void, delay: number | null) {
   }, [callback]);
 
   // Set up the interval.
+  // eslint-disable-next-line consistent-return
   useEffect((): (() => void) | void => {
     function tick() {
       if (savedCallback.current) savedCallback.current();

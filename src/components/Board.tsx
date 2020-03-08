@@ -1,23 +1,24 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 
-import Column from './Column';
+const enum Tile {
+  Even = 'even',
+  Odd = 'odd',
+}
 
-const Board = ({ food, snake }: { food: Segment, snake: Segment[] }) => (
+const Board = () => (
   <div className="board">
-    {Array.from({ length: 32 }, (_, i) => <Column x={i} food={food} key={i} snake={snake} />)}
+    {Array.from({ length: 32 }, (_, x) => (
+      <div className="col">
+        {Array.from({ length: 32 }, (__, y) => (
+          <div
+            id={`${x},${y}`}
+            key={`${x},${y}`}
+            className={`square ${(y - x) % 2 === 0 ? Tile.Even : Tile.Odd}`}
+          />
+        ))}
+      </div>
+    ))}
   </div>
 );
-
-Board.propTypes = {
-  food: PropTypes.shape({
-    x: PropTypes.number,
-    y: PropTypes.number,
-  }).isRequired,
-  snake: PropTypes.arrayOf(PropTypes.shape({
-    x: PropTypes.number.isRequired,
-    y: PropTypes.number.isRequired,
-  })).isRequired,
-};
 
 export default Board;

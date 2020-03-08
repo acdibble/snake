@@ -1,11 +1,12 @@
 import { getRandomCoordinates } from './randoms';
-import contains from './contains';
 
-const seedFood = (snake: Segment[], newSnake?: Segment[]) => {
+const seedFood = () => {
   let coord = getRandomCoordinates();
+  let el = document.getElementById(`${coord.x},${coord.y}`);
 
-  while (contains(newSnake || snake, coord)) {
+  while (el?.classList.contains('snake')) {
     coord = getRandomCoordinates();
+    el = document.getElementById(`${coord.x},${coord.y}`);
   }
 
   return coord;

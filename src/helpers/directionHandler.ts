@@ -1,3 +1,10 @@
+export const enum Direction {
+  Up,
+  Right,
+  Down,
+  Left
+}
+
 const directionHandler = (head = { x: 0, y: 0 }, direction: Direction) => {
   switch (direction) {
     case Direction.Left:

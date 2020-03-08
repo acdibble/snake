@@ -13,3 +13,15 @@
   width: 25px;
   height: 25px;
 }
+
+.snake {
+  background-color: red;
+}
+
+.even {
+  background-color: yellow;
+}
+
+.odd {
+  background-color: #CCCC00;
+}

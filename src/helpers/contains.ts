@@ -1,4 +1,4 @@
-const contains = (snake = [], obj) => {
+const contains = (snake: Segment[] = [], obj: Segment) => {
   const len = snake.length;
 
   for (let i = 0; i < len; i += 1) {

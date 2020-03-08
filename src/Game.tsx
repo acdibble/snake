@@ -12,9 +12,9 @@ import wowMe from './helpers/wowMe';
 import seedFood from './helpers/seedFood';
 
 const Game = () => {
-  const [direction, setDirection] = useState(getRandomDirection());
-  const [food, setFood] = useState({ x: -1, y: -1 });
-  const [snake, setSnake] = useState([]);
+  const [direction, setDirection] = useState<Direction>(getRandomDirection());
+  const [food, setFood] = useState<Segment>({ x: -1, y: -1 });
+  const [snake, setSnake] = useState<Segment[]>([]);
   const currentDirection = useRef(direction);
 
   const init = () => {

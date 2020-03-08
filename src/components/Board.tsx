@@ -3,9 +3,9 @@ import PropTypes from 'prop-types';
 
 import Column from './Column';
 
-const Board = ({ food, snake }) => (
+const Board = ({ food, snake }: { food: Segment, snake: Segment[] }) => (
   <div className="board">
-    {Array.from({ length: 32 }, (v, i) => <Column x={i} food={food} key={i} snake={snake} />)}
+    {Array.from({ length: 32 }, (_, i) => <Column x={i} food={food} key={i} snake={snake} />)}
   </div>
 );
 

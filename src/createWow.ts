@@ -1,4 +1,6 @@
-// @ts-ignore
+import { createSignal, onMount } from 'solid-js';
+
+// @ts-expect-error
 const AudioContext = window.AudioContext || window.webkitAudioContext;
 const audioCtx = new AudioContext();
 
@@ -17,17 +19,21 @@ const play = async (audioBuffer: AudioBuffer) => {
   return sampleSource;
 };
 
-const wowMe = (() => {
-  let counter = 0;
-  let sounds: AudioBuffer[] = [];
+export default function createWow() {
+  const [counter, setCounter] = createSignal(0);
+  const [files, setFiles] = createSignal([] as AudioBuffer[]);
 
-  Promise.all(Array.from({ length: 17 }, (_, i) => getFile(`/assets/wow${i}.wav`)))
-    .then((buffers) => { sounds = buffers; });
+  onMount(() => {
+    Promise.all(
+      Array.from({ length: 17 }, (_, i) => getFile(`/wow${i}.wav`)),
+    ).then(setFiles);
+  });
 
   return () => {
-    play(sounds[counter % 17]).catch(console.error);
-    counter += 1;
+    const loadedFiles = files();
+    if (loadedFiles.length === 0) return;
+    const current = counter();
+    setCounter((current + 1) % loadedFiles.length);
+    play(loadedFiles[current]).catch(console.error);
   };
-})();
-
-export default wowMe;
+}

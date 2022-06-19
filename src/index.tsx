@@ -1,6 +1,7 @@
-import React from 'react';
-import ReactDom from 'react-dom';
+/* @refresh reload */
+import { render } from 'solid-js/web';
 
-import Game from './Game';
+import './index.css';
+import App from './App';
 
-ReactDom.render(<Game />, document.getElementById('app'));
+render(() => <App />, document.getElementById('root') as HTMLElement);
